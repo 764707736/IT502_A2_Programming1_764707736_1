@@ -57,9 +57,6 @@ namespace Assessment2Task2
                 Console.WriteLine(e.Message);
             }
         }
-        public void DisplayRoom()
-        {
-        }
         
 
     }
@@ -142,14 +139,7 @@ namespace Assessment2Task2
             }
 
         }
-        public void DeallocateRoom()
-        {
-
-        }
-        public static void DisplayAllocateRoomDetails()
-        {
-
-        }
+        
     }
     public class FileManagement
     {
@@ -209,11 +199,11 @@ namespace Assessment2Task2
             }
         }
 
-        public static void CreateABackup(string folderPath, string fileName1, string fileName2, string fileName, string fileName_backup)
+        public static void CreateABackup(string folderPath, string fileName1, string fileName2, string fileName_backup_tmp, string fileName_backup)
         {
             string filePath1 = Path.Combine(folderPath, fileName1);
             string filePath2 = Path.Combine(folderPath, fileName2);
-            string filePath = Path.Combine(folderPath, fileName);
+            string filePath_backup_tmp = Path.Combine(folderPath, fileName_backup_tmp);
             string filePath_backup = Path.Combine(folderPath, fileName_backup);
             try
             {
@@ -223,7 +213,7 @@ namespace Assessment2Task2
                 if (roomLst.Length > 0 || roomAllocateLst.Length > 0)
                 {
                     // Create a Backup version for 2 files onto a new file
-                    using(StreamWriter backupFile = new StreamWriter(filePath))
+                    using(StreamWriter backupFile = new StreamWriter(filePath_backup_tmp))
                     {
                         backupFile.WriteLine("***********************************************************************************");
                         backupFile.WriteLine("                              BACK UP AT {0}                ", DateTime.Now);
@@ -237,11 +227,11 @@ namespace Assessment2Task2
 
 
                     //Copying from LHMS to back up file
-                    File.Copy(filePath, filePath_backup);
+                    File.Copy(filePath_backup_tmp, filePath_backup);
 
 
                     //Cleaning the LHMS file
-                    using(FileStream fs = new FileStream(filePath, FileMode.Open))
+                    using(FileStream fs = new FileStream(filePath_backup_tmp, FileMode.Open))
                     {
                         fs.SetLength(0);
                     }
@@ -261,13 +251,9 @@ namespace Assessment2Task2
     class Program
     {
         // Variables declaration and initialization
-        public static Room[] listofRooms;
-        public static int[] listOfRoomlAllocaltions;
-        public static string filePath;
-
-        public static string fileName = "lhms_764707736.txt";
+        public static string fileName_backup_tmp = "lhms_764707736.txt";
         public static string fileName_roomLst = "RoomList.txt";
-        public static string fileName_roomAllocateLst = "RoomAllocationList.txt";
+        public static string fileName_roomAllocationLst = "RoomAllocationList.txt";
         public static string fileName_backup = "lhms_764707736_backup.txt";
         public static string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -277,9 +263,11 @@ namespace Assessment2Task2
 
             //int IsFileExist = Assessment2Task2.FileManagement.IsFileExist(filePath);
             char ans;
-            string filePath = Path.Combine(folderPath, fileName);
+            
             string filePath_roomLst = Path.Combine(folderPath, fileName_roomLst);
-            string filePath_roomAllocateLst = Path.Combine(folderPath, fileName_roomAllocateLst);
+            string filePath_roomAllocationLst = Path.Combine(folderPath, fileName_roomAllocationLst);
+            string filePath_backup_tmp = Path.Combine(folderPath, fileName_backup_tmp);
+            string filePath_Backup = Path.Combine(folderPath, fileName_backup);
             do
             {
                 Console.Clear();
@@ -312,14 +300,15 @@ namespace Assessment2Task2
                         break;
                     case 3:
                         // allocate Room To Customer function
-                        Assessment2Task2.RoomlAllocaltion.AllocateAndDeallocateRoom(folderPath, fileName_roomAllocateLst, 1);
+                        Assessment2Task2.RoomlAllocaltion.AllocateAndDeallocateRoom(folderPath, fileName_roomAllocationLst, 1);
                         break;
                     case 4:
                         // De-Allocate Room From Customer function
-                        Assessment2Task2.RoomlAllocaltion.AllocateAndDeallocateRoom(folderPath, fileName_roomAllocateLst, 0);
+                        Assessment2Task2.RoomlAllocaltion.AllocateAndDeallocateRoom(folderPath, fileName_roomAllocationLst, 0);
                         break;
                     case 5:
                         // display Room Alocations function;
+                        Assessment2Task2.FileManagement.DiplayFileData(filePath_roomAllocationLst);
                         break;
                     case 6:
                         //  Display "Billing Feature is Under Construction and will be added soon…!!!"
@@ -329,11 +318,12 @@ namespace Assessment2Task2
                         // SaveRoomAllocationsToFile
                         // Read the content of the file and append it to another file called “lhms_764707736_backup.txt”
                         // and delete the content of the “lhms_764707736.txt” file”
-                        Assessment2Task2.FileManagement.CreateABackup(folderPath, fileName_roomLst, fileName_roomAllocateLst,fileName, fileName_backup);
+                        Assessment2Task2.FileManagement.CreateABackup(folderPath, fileName_roomLst, fileName_roomAllocationLst, filePath_backup_tmp, fileName_backup);
 
                         break;
                     case 8:
-                        //Show Room Allocations From File
+                        //Show Room Allocations From a Backup File
+                        Assessment2Task2.FileManagement.DiplayFileData(filePath_Backup);
                         break;
                     case 9:
                         // Exit Application
