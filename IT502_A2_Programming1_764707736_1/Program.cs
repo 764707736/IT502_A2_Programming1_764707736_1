@@ -327,10 +327,9 @@ namespace Assessment2Task2
                         break;
                     case 9:
                         // Exit Application
+                        Console.WriteLine("Thank you");
                         break;
-                    case 0:
-                        
-                        break;
+                   
                     default:
                         break;
                 }
