@@ -51,6 +51,7 @@ namespace Assessment2Task2
 					roomLst.WriteLine(" Employee Position : {0}", employeePosition);
 					roomLst.WriteLine("***********************************************************************************");
 				}
+				
 
 				Console.WriteLine("Added a room successfully");
 
@@ -374,7 +375,7 @@ namespace Assessment2Task2
 					Console.Write("Enter Your Choice Number Here: ");
 					choice = Convert.ToInt32(Console.ReadLine());
 
-					Console.WriteLine("Your choice is {0}", choice);
+					//Console.WriteLine("Your choice is {0}", choice);
 
 					switch (choice)
 					{
